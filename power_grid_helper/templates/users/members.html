@@ -3,14 +3,27 @@
 {% block content %}
     <h1>Welcome {{ current_user.username }}</h1>
 
+      <br>
+      <br>
+
     Your current balance is {{ current_user.balance() }} elektro.
+
+      <br>
+      <br>
+      <br>
 
 <div class="container">
       <form role="form" method='POST' action='/users/'>
         <div class="form-group">
           <input type="text" name="transaction" class="form-control" id="url-box" placeholder="Transaction" style="max-width: 200px;">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" name='btn' value='transaction-btn' class="btn btn-default">Submit transaction</button>
+<br>
+      <br>
+        <div class="form-group">
+          <input type="text" name="payment" class="form-control" id="url-box" placeholder="Number of houses" style="max-width: 200px;">
+        </div>
+        <button type="submit" name='btn' value='payment-btn' class="btn btn-default">Request Payment</button>
       </form>
       <br>
       {% for error in errors %}
