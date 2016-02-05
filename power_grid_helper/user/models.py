@@ -70,5 +70,5 @@ class User(UserMixin, SurrogatePK, Model):
         return '{}'.format(self.bank_balance)
 
     def update_balance(self, transaction):
-        self.bank_balance = str(float(self.bank_balance) + float(transaction))
+        self.bank_balance = str(float(self.bank_balance) - float(transaction))
         self.save(commit=True)
