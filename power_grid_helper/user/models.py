@@ -38,10 +38,12 @@ class User(UserMixin, SurrogatePK, Model):
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
+    bank_balance = Column(db.String(30), nullable=True)
 
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
         db.Model.__init__(self, username=username, email=email, **kwargs)
+        self.bank_balance = 500
         if password:
             self.set_password(password)
         else:
@@ -63,3 +65,10 @@ class User(UserMixin, SurrogatePK, Model):
     def __repr__(self):
         """Represent instance as a unique string."""
         return '<User({username!r})>'.format(username=self.username)
+
+    def balance(self):
+        return '{}'.format(self.bank_balance)
+
+    def update_balance(self, transaction):
+        self.bank_balance = str(float(self.bank_balance) + float(transaction))
+        self.save(commit=True)
