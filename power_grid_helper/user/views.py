@@ -13,6 +13,9 @@ blueprint = Blueprint('user', __name__, url_prefix='/users', static_folder='../s
 @login_required
 def members():
     """List members."""
+    if current_user.username == 'banker':
+        return render_template('users/banker.html')
+
     errors = []
     if request.method == "POST":
         print(request.form)

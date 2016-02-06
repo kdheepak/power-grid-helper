@@ -43,7 +43,13 @@ class User(UserMixin, SurrogatePK, Model):
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
         db.Model.__init__(self, username=username, email=email, **kwargs)
-        self.bank_balance = 500
+        if self.username == 'banker':
+            self.__banker = True
+            self.bank_balance = 0
+        else:
+            self.__banker = False
+            self.bank_balance = 500
+
         if password:
             self.set_password(password)
         else:
@@ -70,5 +76,12 @@ class User(UserMixin, SurrogatePK, Model):
         return '{}'.format(self.bank_balance)
 
     def update_balance(self, transaction):
+        if float(self.bank_balance) - float(transaction) < 0:
+            raise Exception("Cannot make transaction. Current balance = {}".format(self.bank_balance))
+
         self.bank_balance = str(float(self.bank_balance) - float(transaction))
         self.save(commit=True)
+
+    def get_balance(self):
+        if self.__banker:
+            return 0
